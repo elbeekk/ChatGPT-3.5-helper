@@ -1,8 +1,11 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/app_constants.dart';
+import 'package:test_app/signin_page.dart';
 
 class LanguagePick extends StatefulWidget {
   LanguagePick({super.key});
@@ -12,18 +15,18 @@ class LanguagePick extends StatefulWidget {
 }
 
 class _LanguagePickState extends State<LanguagePick> {
-  bool first = false;
-
-  bool second = true;
-
-  bool third = false;
-
+  FToast fToast = FToast();
   List list = [
     ['assets/uzbek.json','Uzbek',false],
     ['assets/russian.json','Russian',false],
     ['assets/english.json','English',false],
   ];
-
+  @override
+  void initState() {
+    fToast.init(context);
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.sizeOf(context).height;
@@ -31,6 +34,7 @@ class _LanguagePickState extends State<LanguagePick> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        centerTitle: true,
         elevation: 0,
         backgroundColor: Constants.mainColor,
         automaticallyImplyLeading: false,
@@ -49,8 +53,18 @@ class _LanguagePickState extends State<LanguagePick> {
               backgroundColor: Constants.backColor),
           onPressed: () async {
             SharedPreferences preferences = await SharedPreferences.getInstance();
-            preferences.setString('lang', list[0][2] ? 'uz':list[1][2] ? 'ru':'en').whenComplete(() => print(preferences.getString('lang')));
-
+            preferences.setString('lang', list[0][2] ? 'uz':list[1][2] ? 'ru':'en').whenComplete(() => log(preferences.getString('lang')??''));
+            if(list[0][2] ||list[1][2] ||list[2][2] ){
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInPage(),), (route) => false);
+            }else{
+              fToast.showToast(
+                  gravity: ToastGravity.TOP,
+                  child: Container(
+                decoration: BoxDecoration(color: Constants.errorColor,borderRadius: BorderRadius.circular(25)),
+                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                child: Text('Please pick a language',style: GoogleFonts.openSans(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),),
+              ));
+            }
           },
           icon: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
