@@ -36,7 +36,7 @@ class _LanguagePickState extends State<LanguagePick> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Constants.mainColor,
+        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         title: Text(
           Constants.appName,
