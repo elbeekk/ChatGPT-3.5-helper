@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:test_app/firebase_options.dart';
 import 'package:test_app/home_page.dart';
 import 'package:test_app/language_pick.dart';
+import 'package:test_app/signin_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: SignInPage(),
     );
   }
 }
